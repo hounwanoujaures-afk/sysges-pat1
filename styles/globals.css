@@ -1,0 +1,219 @@
+/* styles/globals.css */
+/* ============================================================
+   SysGeS-PAT — Styles globaux
+   Design system : Bleu Nuit Institutionnel × Or Chaud
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables CSS globales ── */
+:root {
+  --bg-primary:    #0f0e1a;
+  --bg-card:       #16152a;
+  --bg-muted:      #1e1d33;
+  --border-subtle: #2a2845;
+  --gold:          #fbbf24;
+  --gold-muted:    rgba(251, 191, 36, 0.15);
+  --text-primary:  #f1f0ff;
+  --text-secondary:#9b97c7;
+  --text-muted:    #5e5a8a;
+  --accent-blue:   #6366f1;
+  --accent-green:  #10b981;
+  --accent-red:    #f43f5e;
+}
+
+/* ── Base Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Scrollbar premium ── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb  { background: var(--border-subtle); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Sélection de texte ── */
+::selection {
+  background: rgba(251, 191, 36, 0.25);
+  color: var(--text-primary);
+}
+
+/* ── Focus accessible ── */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Composants réutilisables ── */
+@layer components {
+
+  /* Carte principale */
+  .card {
+    @apply bg-surface-card border border-surface-border rounded-2xl p-6;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
+
+  /* Bouton primaire or */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
+    @apply bg-gold-400 text-navy-900 hover:bg-gold-300;
+    @apply transition-all duration-200 active:scale-95;
+    box-shadow: 0 0 20px rgba(251,191,36,0.2);
+  }
+
+  /* Bouton secondaire contour */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
+    @apply border border-surface-border text-text-secondary hover:text-text-primary hover:border-gold-400;
+    @apply transition-all duration-200 active:scale-95;
+  }
+
+  /* Input de formulaire */
+  .form-input {
+    @apply w-full bg-surface-muted border border-surface-border rounded-xl px-4 py-3;
+    @apply text-sm text-white placeholder-navy-400;
+    @apply focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/30;
+    @apply transition-all duration-200;
+  }
+
+  /* Label de formulaire */
+  .form-label {
+    @apply block text-xs font-semibold uppercase tracking-widest text-navy-300 mb-2;
+  }
+
+  /* Badge statut */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  /* Ligne de tableau */
+  .table-row-hover {
+    @apply hover:bg-surface-muted transition-colors duration-150 cursor-default;
+  }
+
+  /* Titre section */
+  .section-title {
+    @apply font-display text-xl font-semibold text-white;
+  }
+
+  /* Sous-titre */
+  .section-subtitle {
+    @apply text-sm text-navy-300 mt-1;
+  }
+}
+
+/* ── Animation utilitaires ── */
+@layer utilities {
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+
+  /* Skeleton loader shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--bg-card) 25%,
+      var(--bg-muted) 50%,
+      var(--bg-card) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+    border-radius: 8px;
+  }
+
+  /* Dégradé or sur texte */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #fcd34d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism subtil */
+  .glass {
+    background: rgba(22, 21, 42, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Bordure brillante */
+  .border-glow {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+}
+
+/* ── Animations keyframes ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page transitions ── */
+.page-enter {
+  animation: slideUp 0.5s ease forwards;
+}
+
+/* ── Recharts custom ── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border-subtle) !important;
+  stroke-opacity: 0.5 !important;
+}
+
+.recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5));
+}
+
+/* ── Print (basique) ── */
+@media print {
+  .no-print { display: none !important; }
+  body       { background: white; color: black; }
+}
