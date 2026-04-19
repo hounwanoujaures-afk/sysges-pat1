@@ -1,7 +1,8 @@
 /* styles/globals.css */
 /* ============================================================
    SysGeS-PAT — Styles globaux
-   Design system : Bleu Nuit Institutionnel × Or Chaud
+   Design system : Vert Institutionnel Bénin × Or Chaud
+   Inspiré de tourisme.gouv.bj — sobre, officiel, lisible
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -12,18 +13,17 @@
 
 /* ── Variables CSS globales ── */
 :root {
-  --bg-primary:    #0f0e1a;
-  --bg-card:       #16152a;
-  --bg-muted:      #1e1d33;
-  --border-subtle: #2a2845;
+  --bg-primary:    #f8faf9;
+  --bg-card:       #ffffff;
+  --bg-muted:      #eef6f1;
+  --border-subtle: #d1e7da;
+  --green:         #2d9b63;
+  --green-dark:    #1e7d4e;
   --gold:          #fbbf24;
   --gold-muted:    rgba(251, 191, 36, 0.15);
-  --text-primary:  #f1f0ff;
-  --text-secondary:#9b97c7;
-  --text-muted:    #5e5a8a;
-  --accent-blue:   #6366f1;
-  --accent-green:  #10b981;
-  --accent-red:    #f43f5e;
+  --text-primary:  #0f3324;
+  --text-secondary:#2d6049;
+  --text-muted:    #6b9e83;
 }
 
 /* ── Base Reset ── */
@@ -48,21 +48,21 @@ body {
   min-height: 100vh;
 }
 
-/* ── Scrollbar premium ── */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
-::-webkit-scrollbar-track  { background: var(--bg-primary); }
+::-webkit-scrollbar-track  { background: var(--bg-muted); }
 ::-webkit-scrollbar-thumb  { background: var(--border-subtle); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ── Sélection de texte ── */
+/* ── Sélection ── */
 ::selection {
-  background: rgba(251, 191, 36, 0.25);
+  background: rgba(45, 155, 99, 0.2);
   color: var(--text-primary);
 }
 
 /* ── Focus accessible ── */
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--green);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -73,35 +73,35 @@ body {
   /* Carte principale */
   .card {
     @apply bg-surface-card border border-surface-border rounded-2xl p-6;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.8) inset;
   }
 
-  /* Bouton primaire or */
+  /* Bouton primaire vert */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
-    @apply bg-gold-400 text-navy-900 hover:bg-gold-300;
+    @apply bg-green-600 text-white hover:bg-green-700;
     @apply transition-all duration-200 active:scale-95;
-    box-shadow: 0 0 20px rgba(251,191,36,0.2);
+    box-shadow: 0 4px 12px rgba(45,155,99,0.25);
   }
 
   /* Bouton secondaire contour */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
-    @apply border border-surface-border text-navy-300 hover:text-white hover:border-gold-400;
+    @apply border border-surface-border text-navy-500 hover:text-green-600 hover:border-green-500;
     @apply transition-all duration-200 active:scale-95;
   }
 
   /* Input de formulaire */
   .form-input {
     @apply w-full bg-surface-muted border border-surface-border rounded-xl px-4 py-3;
-    @apply text-sm text-white placeholder-navy-400;
-    @apply focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/30;
+    @apply text-sm text-green-900 placeholder-navy-300;
+    @apply focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/30;
     @apply transition-all duration-200;
   }
 
   /* Label de formulaire */
   .form-label {
-    @apply block text-xs font-semibold uppercase tracking-widest text-navy-300 mb-2;
+    @apply block text-xs font-semibold uppercase tracking-widest text-navy-400 mb-2;
   }
 
   /* Badge statut */
@@ -116,12 +116,12 @@ body {
 
   /* Titre section */
   .section-title {
-    @apply font-display text-xl font-semibold text-white;
+    @apply font-display text-xl font-semibold text-green-900;
   }
 
   /* Sous-titre */
   .section-subtitle {
-    @apply text-sm text-navy-300 mt-1;
+    @apply text-sm text-navy-400 mt-1;
   }
 }
 
@@ -134,17 +134,25 @@ body {
   .animate-delay-400 { animation-delay: 400ms; }
   .animate-delay-500 { animation-delay: 500ms; }
 
-  /* Skeleton loader shimmer */
+  /* Skeleton loader */
   .skeleton {
     background: linear-gradient(
       90deg,
-      var(--bg-card) 25%,
-      var(--bg-muted) 50%,
-      var(--bg-card) 75%
+      var(--bg-muted) 25%,
+      var(--bg-card) 50%,
+      var(--bg-muted) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.8s infinite;
     border-radius: 8px;
+  }
+
+  /* Dégradé vert sur texte */
+  .text-gradient-green {
+    background: linear-gradient(135deg, #2d9b63, #1e7d4e, #4ab57f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   /* Dégradé or sur texte */
@@ -155,18 +163,11 @@ body {
     background-clip: text;
   }
 
-  /* Glassmorphism subtil */
+  /* Glassmorphism */
   .glass {
-    background: rgba(22, 21, 42, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-  }
-
-  /* Bordure brillante */
-  .border-glow {
-    border: 1px solid transparent;
-    background-clip: padding-box;
-    position: relative;
   }
 }
 
@@ -186,16 +187,6 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* ── Page transitions ── */
 .page-enter {
   animation: slideUp 0.5s ease forwards;
@@ -205,14 +196,20 @@ body {
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
   stroke: var(--border-subtle) !important;
-  stroke-opacity: 0.5 !important;
+  stroke-opacity: 0.6 !important;
 }
 
 .recharts-tooltip-wrapper {
-  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.1));
 }
 
-/* ── Print (basique) ── */
+/* ── En-tête institutionnel ── */
+.header-institutional {
+  background: linear-gradient(135deg, #0f3324 0%, #1e7d4e 100%);
+  border-bottom: 3px solid var(--gold);
+}
+
+/* ── Print ── */
 @media print {
   .no-print { display: none !important; }
   body       { background: white; color: black; }
