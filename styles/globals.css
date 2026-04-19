@@ -1,9 +1,6 @@
-﻿/* styles/globals.css */
-/* ============================================================
-   SysGeS-PAT — Styles globaux
-   Design system : Vert Institutionnel Bénin × Or Chaud
-   Inspiré de tourisme.gouv.bj — sobre, officiel, lisible
-   ============================================================ */
+﻿/* styles/globals.css — SysGeS-PAT
+   Design : Vert Institutionnel Béninois × Or Chaud
+   Inspiré de tourisme.gouv.bj */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -11,27 +8,27 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Variables CSS globales ── */
+/* ── Variables CSS ── */
 :root {
-  --bg-primary:    #f8faf9;
-  --bg-card:       #ffffff;
-  --bg-muted:      #eef6f1;
-  --border-subtle: #d1e7da;
-  --green:         #2d9b63;
-  --green-dark:    #1e7d4e;
+  --green-darkest: #050f09;
+  --green-dark:    #0c2818;
+  --green-mid:     #155a3a;
+  --green-base:    #228b57;
+  --green-light:   #45ae7a;
+  --green-pale:    #a3c9b0;
   --gold:          #fbbf24;
-  --gold-muted:    rgba(251, 191, 36, 0.15);
-  --text-primary:  #0f3324;
-  --text-secondary:#2d6049;
-  --text-muted:    #6b9e83;
+  --gold-dark:     #f59e0b;
+  --bg-page:       #f5f7f5;
+  --bg-card:       #ffffff;
+  --bg-muted:      #eaf1ec;
+  --border:        #d4e6da;
+  --text-dark:     #0c2818;
+  --text-mid:      #2e6b47;
+  --text-muted:    #6fa888;
 }
 
-/* ── Base Reset ── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
@@ -40,8 +37,8 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-page);
+  color: var(--text-dark);
   font-family: 'DM Sans', system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.6;
@@ -49,113 +46,110 @@ body {
 }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar        { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track  { background: var(--bg-muted); }
-::-webkit-scrollbar-thumb  { background: var(--border-subtle); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+::-webkit-scrollbar-thumb  { background: var(--green-light); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green-base); }
 
 /* ── Sélection ── */
-::selection {
-  background: rgba(45, 155, 99, 0.2);
-  color: var(--text-primary);
-}
+::selection { background: rgba(251,191,36,0.28); color: var(--green-dark); }
 
-/* ── Focus accessible ── */
+/* ── Focus ── */
 :focus-visible {
-  outline: 2px solid var(--green);
+  outline: 2px solid var(--green-base);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* ── Composants réutilisables ── */
+/* ── Composants ── */
 @layer components {
 
-  /* Carte principale */
+  /* Carte — fond blanc, ombre légère */
   .card {
     @apply bg-surface-card border border-surface-border rounded-2xl p-6;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.8) inset;
+    box-shadow: 0 1px 3px rgba(12,40,24,0.06), 0 1px 2px rgba(12,40,24,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 20px rgba(12,40,24,0.10);
   }
 
-  /* Bouton primaire vert */
+  /* Bouton primaire — vert foncé institutionnel */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
-    @apply bg-green-600 text-white hover:bg-green-700;
     @apply transition-all duration-200 active:scale-95;
-    box-shadow: 0 4px 12px rgba(45,155,99,0.25);
+    background: linear-gradient(135deg, #155a3a 0%, #0c2818 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(12,40,24,0.30);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #1e7048 0%, #155a3a 100%);
+    box-shadow: 0 4px 16px rgba(12,40,24,0.35);
   }
 
-  /* Bouton secondaire contour */
+  /* Bouton secondaire — contour vert */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
-    @apply border border-surface-border text-navy-500 hover:text-green-600 hover:border-green-500;
+    @apply border border-surface-dark text-surface-dark hover:bg-surface-dark hover:text-white;
     @apply transition-all duration-200 active:scale-95;
   }
 
-  /* Input de formulaire */
+  /* Input */
   .form-input {
-    @apply w-full bg-surface-muted border border-surface-border rounded-xl px-4 py-3;
-    @apply text-sm text-green-900 placeholder-navy-300;
-    @apply focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/30;
+    @apply w-full border border-surface-border rounded-xl px-4 py-3;
+    @apply text-sm text-surface-dark placeholder-navy-400;
+    @apply focus:outline-none focus:border-green-600 focus:ring-2 focus:ring-green-600/15;
     @apply transition-all duration-200;
+    background: var(--bg-muted);
   }
+  .form-input:focus { background: var(--bg-card); }
 
-  /* Label de formulaire */
+  /* Label */
   .form-label {
-    @apply block text-xs font-semibold uppercase tracking-widest text-navy-400 mb-2;
+    @apply block text-xs font-semibold uppercase tracking-wider text-navy-600 mb-2;
   }
 
-  /* Badge statut */
+  /* Badge */
   .badge {
     @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
   }
 
-  /* Ligne de tableau */
+  /* Tableau hover */
   .table-row-hover {
     @apply hover:bg-surface-muted transition-colors duration-150 cursor-default;
   }
 
-  /* Titre section */
-  .section-title {
-    @apply font-display text-xl font-semibold text-green-900;
+  /* Titres */
+  .section-title    { @apply font-display text-xl font-semibold text-surface-dark; }
+  .section-subtitle { @apply text-sm text-navy-500 mt-1; }
+
+  /* Sidebar — fond vert très sombre */
+  .sidebar-bg {
+    background: linear-gradient(180deg, #0c2818 0%, #050f09 100%);
+    border-right: 1px solid #1e4a2e;
   }
 
-  /* Sous-titre */
-  .section-subtitle {
-    @apply text-sm text-navy-400 mt-1;
+  /* Bandeau institutionnel */
+  .gov-banner {
+    background: linear-gradient(90deg, #0c2818 0%, #155a3a 100%);
+    border-bottom: 2px solid var(--gold);
   }
 }
 
-/* ── Animation utilitaires ── */
+/* ── Utilitaires ── */
 @layer utilities {
-
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }
   .animate-delay-300 { animation-delay: 300ms; }
   .animate-delay-400 { animation-delay: 400ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
 
-  /* Skeleton loader */
   .skeleton {
-    background: linear-gradient(
-      90deg,
-      var(--bg-muted) 25%,
-      var(--bg-card) 50%,
-      var(--bg-muted) 75%
-    );
+    background: linear-gradient(90deg, var(--bg-muted) 25%, var(--border) 50%, var(--bg-muted) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.8s infinite;
     border-radius: 8px;
   }
 
-  /* Dégradé vert sur texte */
-  .text-gradient-green {
-    background: linear-gradient(135deg, #2d9b63, #1e7d4e, #4ab57f);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Dégradé or sur texte */
   .text-gradient-gold {
     background: linear-gradient(135deg, #fbbf24, #f59e0b, #fcd34d);
     -webkit-background-clip: text;
@@ -163,51 +157,32 @@ body {
     background-clip: text;
   }
 
-  /* Glassmorphism */
+  .text-gradient-green {
+    background: linear-gradient(135deg, #228b57, #45ae7a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism clair */
   .glass {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }
 
-/* ── Animations keyframes ── */
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+/* ── Keyframes ── */
+@keyframes shimmer  { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
+.page-enter { animation: slideUp 0.4s ease forwards; }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Page transitions ── */
-.page-enter {
-  animation: slideUp 0.5s ease forwards;
-}
-
-/* ── Recharts custom ── */
+/* ── Recharts ── */
 .recharts-cartesian-grid-horizontal line,
-.recharts-cartesian-grid-vertical line {
-  stroke: var(--border-subtle) !important;
-  stroke-opacity: 0.6 !important;
-}
-
-.recharts-tooltip-wrapper {
-  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.1));
-}
-
-/* ── En-tête institutionnel ── */
-.header-institutional {
-  background: linear-gradient(135deg, #0f3324 0%, #1e7d4e 100%);
-  border-bottom: 3px solid var(--gold);
-}
+.recharts-cartesian-grid-vertical line   { stroke: var(--border) !important; }
+.recharts-tooltip-wrapper                 { filter: drop-shadow(0 4px 16px rgba(12,40,24,0.12)); }
 
 /* ── Print ── */
 @media print {

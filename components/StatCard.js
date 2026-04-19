@@ -1,155 +1,93 @@
-// components/StatCard.js
-// ============================================================
-// Carte de statistique KPI — design premium avec animation
-// ============================================================
-
+// components/StatCard.js — Design institutionnel béninois
 import { useEffect, useRef, useState } from 'react';
 import { HiOutlineTrendingUp, HiOutlineTrendingDown } from 'react-icons/hi';
 import clsx from 'clsx';
 
-// ── Hook d'animation compteur ──────────────────────────────
 function useCountUp(target, duration = 1200) {
   const [count, setCount] = useState(0);
   const frameRef = useRef(null);
-
   useEffect(() => {
     if (typeof target !== 'number') return;
-    const start     = performance.now();
-    const startVal  = 0;
-    const endVal    = target;
-
+    const start = performance.now();
     const step = (now) => {
-      const elapsed  = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      // Easing cubique
-      const eased    = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(startVal + (endVal - startVal) * eased));
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(target * eased));
       if (progress < 1) frameRef.current = requestAnimationFrame(step);
     };
-
     frameRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frameRef.current);
   }, [target, duration]);
-
   return count;
 }
 
-// ── Composant principal ────────────────────────────────────
-export default function StatCard({
-  title,
-  value,
-  unit     = '',
-  icon: Icon,
-  trend,          // ex: '+12%' ou '-3%'
-  trendLabel,     // ex: 'vs mois dernier'
-  accentColor = 'gold', // 'gold' | 'blue' | 'green' | 'red'
-  format: fmt = 'number', // 'number' | 'currency' | 'raw'
-  delay = 0,
-  loading = false,
-}) {
-  const animatedValue = useCountUp(typeof value === 'number' ? value : 0, 1400);
-  const isPositive    = trend?.startsWith('+');
+const PALETTE = {
+  gold:  { bg: 'rgba(251,191,36,0.10)',  border: 'rgba(251,191,36,0.22)',  text: '#f59e0b',  bar: '#fbbf24' },
+  blue:  { bg: 'rgba(59,130,246,0.10)',  border: 'rgba(59,130,246,0.22)',  text: '#3b82f6',  bar: '#60a5fa' },
+  green: { bg: 'rgba(34,139,87,0.12)',   border: 'rgba(34,139,87,0.25)',   text: '#228b57',  bar: '#45ae7a' },
+  red:   { bg: 'rgba(239,68,68,0.10)',   border: 'rgba(239,68,68,0.22)',   text: '#ef4444',  bar: '#f87171' },
+};
 
-  // Palette de couleurs par accent
-  const palette = {
-    gold:  { bg: 'bg-gold-400/10',  border: 'border-gold-400/20',  text: 'text-gold-400',  icon: 'text-gold-400'  },
-    blue:  { bg: 'bg-blue-500/10',  border: 'border-blue-500/20',  text: 'text-blue-400',  icon: 'text-blue-400'  },
-    green: { bg: 'bg-emerald-500/10',border: 'border-emerald-500/20',text: 'text-emerald-400',icon:'text-emerald-400'},
-    red:   { bg: 'bg-rose-500/10',  border: 'border-rose-500/20',  text: 'text-rose-400',  icon: 'text-rose-400'  },
-  };
-  const colors = palette[accentColor] || palette.gold;
+export default function StatCard({ title, value, unit='', icon:Icon, trend, trendLabel, accentColor='gold', format:fmt='number', delay=0, loading=false }) {
+  const animated = useCountUp(typeof value === 'number' ? value : 0, 1400);
+  const isPos = trend?.startsWith('+');
+  const p = PALETTE[accentColor] || PALETTE.gold;
 
-  // Formater la valeur affichée
-  const displayValue = () => {
-    if (fmt === 'currency') {
-      return new Intl.NumberFormat('fr-FR', {
-        style:    'currency',
-        currency: 'XOF',
-        maximumFractionDigits: 0,
-      }).format(animatedValue);
-    }
-    if (fmt === 'number') {
-      return new Intl.NumberFormat('fr-FR').format(animatedValue);
-    }
-    return value; // raw
+  const display = () => {
+    if (fmt === 'currency') return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'XOF', maximumFractionDigits:0 }).format(animated);
+    if (fmt === 'number')   return new Intl.NumberFormat('fr-FR').format(animated);
+    return value;
   };
 
-  if (loading) {
-    return (
-      <div className="card animate-pulse">
-        <div className="skeleton h-4 w-24 mb-4" />
-        <div className="skeleton h-8 w-32 mb-2" />
-        <div className="skeleton h-3 w-16" />
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="card animate-pulse">
+      <div className="skeleton h-3 w-20 mb-4 rounded" />
+      <div className="skeleton h-8 w-28 mb-3 rounded" />
+      <div className="skeleton h-3 w-14 rounded" />
+    </div>
+  );
 
   return (
-    <div
-      className={clsx(
-        'card group relative overflow-hidden',
-        'animate-slide-up opacity-0',
-      )}
-      style={{ animationDelay: `${delay}ms`, animationFillMode: 'forwards' }}
-    >
-      {/* Lueur décorative arrière-plan */}
-      <div className={clsx(
-        'absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-30 transition-opacity duration-500 group-hover:opacity-50',
-        colors.bg,
-      )} />
+    <div className="card relative overflow-hidden group animate-slide-up opacity-0"
+      style={{ animationDelay:`${delay}ms`, animationFillMode:'forwards' }}>
 
-      {/* ── En-tête : titre + icône ── */}
-      <div className="flex items-start justify-between mb-4 relative">
-        <p className="text-xs font-semibold uppercase tracking-widest text-navy-400">
-          {title}
-        </p>
+      {/* Accent bar top */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl" style={{ background: p.bar }} />
+
+      {/* Glow décoratif */}
+      <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ background: p.bg }} />
+
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <p className="text-xs font-semibold uppercase tracking-wider text-navy-500">{title}</p>
         {Icon && (
-          <div className={clsx(
-            'w-9 h-9 rounded-xl flex items-center justify-center border flex-shrink-0',
-            colors.bg, colors.border,
-          )}>
-            <Icon className={clsx('w-4 h-4', colors.icon)} />
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center border flex-shrink-0"
+            style={{ background: p.bg, borderColor: p.border }}>
+            <Icon className="w-4 h-4" style={{ color: p.text }} />
           </div>
         )}
       </div>
 
-      {/* ── Valeur principale ── */}
-      <div className="relative mb-3">
-        <p className={clsx(
-          'font-display text-3xl font-bold text-white leading-none',
-          animatedValue > 0 && 'transition-all duration-300',
-        )}>
-          {displayValue()}
-          {unit && <span className="text-base font-body font-normal text-navy-400 ml-1">{unit}</span>}
-        </p>
-      </div>
+      {/* Valeur */}
+      <p className="font-display text-3xl font-bold text-surface-dark leading-none mb-3">
+        {display()}
+        {unit && <span className="text-base font-body font-normal text-navy-400 ml-1">{unit}</span>}
+      </p>
 
-      {/* ── Tendance ── */}
+      {/* Tendance */}
       {trend && (
         <div className="flex items-center gap-1.5">
-          <span className={clsx(
-            'flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-md',
-            isPositive
-              ? 'text-emerald-400 bg-emerald-400/10'
-              : 'text-rose-400 bg-rose-400/10',
-          )}>
-            {isPositive
-              ? <HiOutlineTrendingUp className="w-3 h-3" />
-              : <HiOutlineTrendingDown className="w-3 h-3" />
-            }
+          <span className="flex items-center gap-0.5 text-xs font-semibold px-1.5 py-0.5 rounded-md"
+            style={ isPos
+              ? { color:'#228b57', background:'rgba(34,139,87,0.10)' }
+              : { color:'#ef4444', background:'rgba(239,68,68,0.10)' } }>
+            {isPos ? <HiOutlineTrendingUp className="w-3 h-3" /> : <HiOutlineTrendingDown className="w-3 h-3" />}
             {trend}
           </span>
-          {trendLabel && (
-            <span className="text-[11px] text-navy-500">{trendLabel}</span>
-          )}
+          {trendLabel && <span className="text-[11px] text-navy-400">{trendLabel}</span>}
         </div>
       )}
-
-      {/* Ligne décorative bas */}
-      <div className={clsx(
-        'absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-        `bg-gradient-to-r from-transparent via-${accentColor === 'gold' ? 'gold-400' : accentColor === 'blue' ? 'blue-400' : accentColor === 'green' ? 'emerald-400' : 'rose-400'} to-transparent`,
-      )} />
     </div>
   );
 }
