@@ -87,7 +87,7 @@ body {
   /* Bouton secondaire contour */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-body font-semibold text-sm;
-    @apply border border-surface-border text-text-secondary hover:text-text-primary hover:border-gold-400;
+    @apply border border-surface-border text-navy-300 hover:text-white hover:border-gold-400;
     @apply transition-all duration-200 active:scale-95;
   }
 
