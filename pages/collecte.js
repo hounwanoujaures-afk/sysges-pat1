@@ -76,16 +76,12 @@ export default function CollectePage() {
       const payload = { ...form, nombreVisiteurs: Number(form.nombreVisiteurs), dateVisite: new Date().toISOString() };
 
       // Timeout 8s pour éviter le spinning infini si Firebase ne répond pas
-      const timeoutPromise = new Promise((_, rej) =>
-        setTimeout(() => rej(new Error('TIMEOUT')), 8000)
-      );
-
       let result;
       if (USE_DEMO) {
-        await new Promise(r => setTimeout(r, 900));
-        result = { success: true, id: `demo-${Date.now()}` };
+       await new Promise(r => setTimeout(r, 900));
+       result = { success: true, id: `demo-${Date.now()}` };
       } else {
-        result = await Promise.race([addVisitor(payload), timeoutPromise]);
+        result = await addVisitor(payload);
       }
 
       if (result?.success) {
